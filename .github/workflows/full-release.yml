@@ -52,7 +52,8 @@ jobs:
         shell: powershell
         run: powershell -ExecutionPolicy Bypass -File patches/patch_wcdb.ps1 -AppDir release2/win-unpacked
       - name: Package installer
-        run: npx electron-builder --win nsis --x64 --prepackaged release2/win-unpacked --publish never --config.artifactName=WeFlow-${GITHUB_REF_NAME#v}-x64-Setup.${ext}
+        shell: bash
+        run: npx electron-builder --win nsis --x64 --prepackaged release2/win-unpacked --publish never '--config.artifactName=WeFlow-'"${GITHUB_REF_NAME#v}"'-x64-Setup.${ext}'
       - name: Upload
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -79,7 +80,7 @@ jobs:
         run: |
           npx tsc
           npx vite build
-          npx electron-builder --linux --x64 --publish never --config.artifactName=WeFlow-${GITHUB_REF_NAME#v}-linux-x64-Setup.${ext}
+          npx electron-builder --linux --x64 --publish never '--config.artifactName=WeFlow-'"${GITHUB_REF_NAME#v}"'-linux-x64-Setup.${ext}'
       - name: Upload
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -107,7 +108,7 @@ jobs:
         run: |
           npx tsc
           npx vite build
-          npx electron-builder --mac dmg zip --arm64 --publish never --config.npmRebuild=false --config.artifactName=WeFlow-${GITHUB_REF_NAME#v}-mac-arm64-Setup.${ext}
+          npx electron-builder --mac dmg zip --arm64 --publish never --config.npmRebuild=false '--config.artifactName=WeFlow-'"${GITHUB_REF_NAME#v}"'-mac-arm64-Setup.${ext}'
       - name: Upload
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
